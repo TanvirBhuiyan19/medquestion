@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -11,20 +12,15 @@ Route::group(['middleware' => 'auth' ], function () {
     Route::get('/', [HomeController::Class, 'index'])->name('home');
 
     //Product Route   
-    Route::get('product/manage', [ProductController::Class, 'manageProduct'])->name('product.manage');
-    Route::get('/sub-subcategory/ajax/{subcategory_id}', [ProductController::Class, 'getSubSubcategory']);
-    Route::get('product/add', [ProductController::Class, 'addProduct'])->name('product.add');
-    Route::post('product/store', [ProductController::Class, 'createProduct'])->name('product.store');
-    Route::get('/product/edit/{id}', [ProductController::Class, 'editProduct'])->name('product.edit');
-    Route::post('/product/update', [ProductController::Class, 'updateProduct'])->name('product.update');
-    Route::post('/product/thumb-update', [ProductController::Class, 'thumbUpdateProduct'])->name('product.thumb-update');
-    Route::post('/product/multipleimg-update', [ProductController::Class, 'updateProductImage'])->name('product.multipleimg-update');
-    Route::get('/product/view/{id}', [ProductController::Class, 'viewProduct'])->name('product.view');
-    Route::get('/product/clone/{id}', [ProductController::Class, 'cloneProduct'])->name('product.clone');
-    Route::get('/product/delete/{id}', [ProductController::Class, 'deleteProduct'])->name('product.delete');
-    Route::get('/product/multipleimg-delete/{id}', [ProductController::Class, 'deleteProductImage'])->name('product.deleteImage');
-    Route::get('/product/active/{id}', [ProductController::Class, 'activeProduct'])->name('product.active');
-    Route::get('/product/inactive/{id}', [ProductController::Class, 'inactiveProduct'])->name('product.inactive');
+    Route::prefix('product')->name('product.')->group( function(){
+        Route::get('/list', [ProductController::class, 'index'])->name('list');
+        Route::get('/create', [ProductController::class, 'create'])->name('create');
+        Route::post('/add', [ProductController::class, 'add'])->name('add');
+        Route::get('/edit/{id}', [ProductController::class, 'edit'])->name('edit');
+        Route::post('/update/{id}', [ProductController::class, 'update'])->name('update');
+        Route::get('/delete/{id}', [ProductController::class, 'delete'])->name('delete');
+        Route::post('/status-change', [ProductController::class, 'statusChange'])->name('published');
+    });
     
 });
 
